@@ -7,7 +7,8 @@ using Random = UnityEngine.Random;
 
 public class GunController : MonoBehaviour
 {
-
+    public static bool isActivate = false; //활성화
+    
     private bool _isReload = false;
     private bool _isFineSightMode = false;
     
@@ -26,16 +27,19 @@ public class GunController : MonoBehaviour
     {
         _audioSource = GetComponent<AudioSource>();
         _crosshair = FindObjectOfType<Crosshair>();
-        _originPos = new Vector3(0, 0, 0);
+        _originPos = Vector3.zero;
         _camera = Camera.main;
     }
 
     void Update()
     {
-        GunFireRateCalc();
-        TryFire();
-        TryReload();
-        TryFineSight();
+        if (isActivate)
+        {
+            GunFireRateCalc();
+            TryFire();
+            TryReload();
+            TryFineSight();
+        }
     }
     
     //발사시도
@@ -189,6 +193,15 @@ public class GunController : MonoBehaviour
         }
 
     }
+
+    public void CancleReload()
+    {
+        if (_isReload)
+        {
+            StopAllCoroutines();
+            _isReload = false;
+        }
+    }
     
     //정조준시도
     private void TryFineSight()
@@ -204,6 +217,7 @@ public class GunController : MonoBehaviour
     {
         _isFineSightMode = !_isFineSightMode;
         gun.anim.SetBool("FineSightMode", _isFineSightMode);
+        _crosshair.FinSightanimation(_isFineSightMode);
         if (_isFineSightMode)
         {
             StopAllCoroutines();
@@ -253,5 +267,21 @@ public class GunController : MonoBehaviour
     public bool GetFineSightMode()
     {
         return _isFineSightMode;
+    }
+
+    public void GunChange(Gun _gun)
+    {
+        if (WeaponManager.currentWeapon != null)
+        {
+            WeaponManager.currentWeapon.gameObject.SetActive(false);
+        }
+
+        gun = _gun;
+        WeaponManager.currentWeapon = gun.GetComponent<Transform>();
+        WeaponManager.currentWeaponAnimator = gun.anim;
+        
+        gun.transform.localPosition = Vector3.zero;
+        gun.gameObject.SetActive(true);
+        isActivate = true;
     }
 }

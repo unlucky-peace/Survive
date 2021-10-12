@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HandController : CloseWeaponController
+public class PickaxeController : CloseWeaponController
 {
-    public static bool isActivate = false;
+    public static bool isActivate = true;
     void Update()
     {
         if (isActivate)
@@ -12,7 +12,13 @@ public class HandController : CloseWeaponController
             TryAttack();
         }
     }
-    
+
+    private void Awake()
+    {
+        WeaponManager.currentWeapon = curCloseWeapon.GetComponent<Transform>();
+        WeaponManager.currentWeaponAnimator = curCloseWeapon.anim;
+    }
+
     protected override IEnumerator HitCoroutine()
     {
         while (isSwing)
@@ -22,12 +28,16 @@ public class HandController : CloseWeaponController
                 //충돌
                 isSwing = false;
                 Debug.Log(hit.transform.name);
+                if (hit.transform.CompareTag("Rock"))
+                {
+                    hit.transform.GetComponent<Rock>().Mining();
+                }
             }
 
             yield return null;
         }
     }
-    
+
     public override void CloseWeaponChange(CloseWeapon _closeWeapon)
     {
         base.CloseWeaponChange(_closeWeapon);

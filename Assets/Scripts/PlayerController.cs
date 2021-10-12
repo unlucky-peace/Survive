@@ -126,6 +126,7 @@ public class PlayerController : MonoBehaviour
     private void IsGrounded()
     {
         _isGrounded = Physics.Raycast(transform.position, Vector3.down, _playerCol.bounds.extents.y + 0.1f);
+        _crosshair.JumpAnimation(!_isGrounded);
     }
 
     private void TryRun()
@@ -174,7 +175,7 @@ public class PlayerController : MonoBehaviour
     
     private void MoveCheck()
     {
-        if (!_isRun && !_isCrouch)
+        if (!_isRun && !_isCrouch && _isGrounded)
         {
             if (Vector3.Distance(_lastPos, transform.position) >= 0.01f) _isWalk = true;
             else _isWalk = false;

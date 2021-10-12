@@ -15,17 +15,30 @@ public class Crosshair : MonoBehaviour
 
     public void WalkingAnimation(bool _flag)
     {
+        WeaponManager.currentWeaponAnimator.SetBool("Walk", _flag);
         _animator.SetBool("Walking", _flag);
     }
 
     public void RunningAnimation(bool _flag)
     {
+        WeaponManager.currentWeaponAnimator.SetBool("Run", _flag);
+        _animator.SetBool("Running", _flag);
+    }
+    
+    public void JumpAnimation(bool _flag)
+    {
+        
         _animator.SetBool("Running", _flag);
     }
     
     public void CrouchingAnimation(bool _flag)
     {
-        _animator.SetBool("Running", _flag);
+        _animator.SetBool("Crouching", _flag);
+    }
+    
+    public void FinSightanimation(bool _flag)
+    {
+        _animator.SetBool("FineSight", _flag);
     }
 
     public void FireAnimation()
@@ -37,10 +50,10 @@ public class Crosshair : MonoBehaviour
 
     public float GetAccuracy()
     {
-        if (_animator.GetBool("Walking")) gunAccuracy = 0.08f;
-        else if (_animator.GetBool("Crouching")) gunAccuracy = 0.02f;
-        else if (_gunController.GetFineSightMode()) gunAccuracy = 0.01f;
-        else gunAccuracy = 0.04f;
+        if (_animator.GetBool("Walking")) gunAccuracy = 0.05f;
+        else if (_animator.GetBool("Crouching")) gunAccuracy = 0.015f;
+        else if (_gunController.GetFineSightMode()) gunAccuracy = 0.001f;
+        else gunAccuracy = 0.025f;
             
         return  gunAccuracy;
     }
