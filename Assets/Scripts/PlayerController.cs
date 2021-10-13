@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour
     private CapsuleCollider _playerCol;
     private GunController _gunController;
     private Crosshair _crosshair;
+    private StatusController _statusController;
     
     void Start()
     {
@@ -45,6 +46,7 @@ public class PlayerController : MonoBehaviour
         _playerCol = GetComponent<CapsuleCollider>();
         _gunController = FindObjectOfType<GunController>();
         _crosshair = FindObjectOfType<Crosshair>();
+        _statusController = FindObjectOfType<StatusController>();
         applySpeed = walkSpeed;
         _originPosY = _camera.transform.localPosition.y;
         _applyCrouchPosY = _originPosY;
@@ -56,8 +58,11 @@ public class PlayerController : MonoBehaviour
         TryRun();
         Move();
         MoveCheck();
-        CameraRotation();
-        CharacterRotation();
+        if (!Inventory.inventoryActivated)
+        {
+            CameraRotation();
+            CharacterRotation();
+        }
     }
     
 
@@ -111,7 +116,7 @@ public class PlayerController : MonoBehaviour
     }
     private void TryJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && _isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space) && _isGrounded && _statusController.GetCurSP() > 0)
         {
             Jump();
         }
@@ -119,7 +124,8 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
- 
+        if(_isCrouch) Crouch(); //앉은 상태에서 점프시 앉은 상태 해제
+        _statusController.DecStamina(100);
         _playerRig.velocity = transform.up * jumpForce;
     }
 
@@ -131,12 +137,12 @@ public class PlayerController : MonoBehaviour
 
     private void TryRun()
     {
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) && _statusController.GetCurSP() > 0)
         {
             Running();
             _isRun = true;
         }
-        else
+        else if (Input.GetKeyUp(KeyCode.LeftShift) || _statusController.GetCurSP() <= 0)
         {
             RunningCancle();
         }
@@ -156,6 +162,7 @@ public class PlayerController : MonoBehaviour
         _gunController.CancleFineSight();
         _isRun = true;
         _crosshair.RunningAnimation(_isRun);
+        _statusController.DecStamina(10);
         applySpeed = runSpeed;
     }
 

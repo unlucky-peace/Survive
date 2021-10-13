@@ -16,6 +16,9 @@ public class Rock : MonoBehaviour
     [SerializeField] private AudioClip miningSE;
     [SerializeField] private AudioClip miningSE2;
 
+    [SerializeField] private int cnt; //아이템 등장 개수
+    [SerializeField] private GameObject rockItemPrefab;
+
     public void Mining()
     {
         _audioSource.clip = miningSE;
@@ -30,6 +33,10 @@ public class Rock : MonoBehaviour
     {
         _audioSource.clip = miningSE2;
         _audioSource.Play();
+        for (int i = 0; i < cnt; i++)
+        {
+            Instantiate(rockItemPrefab, transform.position, Quaternion.identity);
+        }
         col.enabled = false;
         Destroy(goRock);
         goDebris.SetActive(true);
