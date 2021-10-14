@@ -13,6 +13,8 @@ public abstract class CloseWeaponController : MonoBehaviour
     
     protected RaycastHit hit;
 
+    [SerializeField] protected LayerMask layerMask;
+
 
     // Update is called once per frame
 
@@ -53,7 +55,7 @@ public abstract class CloseWeaponController : MonoBehaviour
 
     protected bool CheckObject()
     {
-        if (Physics.Raycast(transform.position, transform.forward, out hit, curCloseWeapon.attackRange))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, curCloseWeapon.attackRange, layerMask))
         {
             return true;
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
@@ -12,17 +13,16 @@ public class Rock : MonoBehaviour
     [SerializeField] private GameObject goRock; // 돌
     [SerializeField] private GameObject goDebris; // 조각
     [SerializeField] private GameObject goEffectPrefab;
-    [SerializeField] private AudioSource _audioSource;
-    [SerializeField] private AudioClip miningSE;
-    [SerializeField] private AudioClip miningSE2;
 
     [SerializeField] private int cnt; //아이템 등장 개수
     [SerializeField] private GameObject rockItemPrefab;
 
+    private String strikeSound = "Pickaxe_strike";
+    private String destroySound = "Rock_destroy";
+
     public void Mining()
     {
-        _audioSource.clip = miningSE;
-        _audioSource.Play();
+        SoundManager.instance.PlaySE(strikeSound);
         var eff = Instantiate(goEffectPrefab, col.bounds.center, Quaternion.identity);
         hp--;
         if (hp <= 0)Destruction();
@@ -31,8 +31,7 @@ public class Rock : MonoBehaviour
 
     private void Destruction()
     {
-        _audioSource.clip = miningSE2;
-        _audioSource.Play();
+        SoundManager.instance.PlaySE(destroySound);
         for (int i = 0; i < cnt; i++)
         {
             Instantiate(rockItemPrefab, transform.position, Quaternion.identity);

@@ -16,13 +16,14 @@ public class GunController : MonoBehaviour
     private Vector3 _originPos; //본래 포지션 값
     
     private RaycastHit _hit; //충돌 정보
+    [SerializeField] private LayerMask layerMask;
     
     private Camera _camera;
     [SerializeField] private Gun gun;
     private AudioSource _audioSource;
     [SerializeField] private GameObject hitEffectPrefab; // 피격 이펙트
     private Crosshair _crosshair;
-    
+
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
@@ -138,7 +139,8 @@ public class GunController : MonoBehaviour
     {
         if (Physics.Raycast(_camera.transform.position, _camera.transform.forward +
             new Vector3(Random.Range(-_crosshair.GetAccuracy() - gun.accurancy, _crosshair.GetAccuracy() + gun.accurancy),
-                Random.Range(-_crosshair.GetAccuracy() - gun.accurancy, _crosshair.GetAccuracy() + gun.accurancy), 0), out _hit, gun.attackRange))
+                Random.Range(-_crosshair.GetAccuracy() - gun.accurancy, _crosshair.GetAccuracy() + gun.accurancy), 0),
+            out _hit, gun.attackRange, layerMask))
         {
             GameObject effect = Instantiate(hitEffectPrefab, _hit.point, Quaternion.LookRotation(_hit.normal));
             Destroy(effect, 2f);

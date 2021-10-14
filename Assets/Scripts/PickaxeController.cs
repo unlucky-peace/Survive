@@ -28,9 +28,16 @@ public class PickaxeController : CloseWeaponController
                 //충돌
                 isSwing = false;
                 Debug.Log(hit.transform.name);
-                if (hit.transform.CompareTag("Rock"))
+                if (hit.transform.CompareTag("Rock")) hit.transform.GetComponent<Rock>().Mining();
+                else if (hit.transform.CompareTag("WeekAnimal"))
                 {
-                    hit.transform.GetComponent<Rock>().Mining();
+                    SoundManager.instance.PlaySE("Animal_hit");
+                    hit.transform.GetComponent<WeekAnimal>().Damage(curCloseWeapon.damage, transform.position);
+                }
+                else if (hit.transform.CompareTag("StrongAnimal"))
+                {
+                    SoundManager.instance.PlaySE("Animal_hit");
+                    //hit.transform.GetComponent<StrongAnimal>().Damage(curCloseWeapon.damage, transform.position);
                 }
             }
 
