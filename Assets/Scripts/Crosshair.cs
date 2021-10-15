@@ -15,30 +15,42 @@ public class Crosshair : MonoBehaviour
 
     public void WalkingAnimation(bool _flag)
     {
-        WeaponManager.currentWeaponAnimator.SetBool("Walk", _flag);
-        _animator.SetBool("Walking", _flag);
+        if (!GameManager.isWater)
+        {
+            WeaponManager.currentWeaponAnimator.SetBool("Walk", _flag);
+            _animator.SetBool("Walking", _flag);
+        }
     }
 
     public void RunningAnimation(bool _flag)
     {
-        WeaponManager.currentWeaponAnimator.SetBool("Run", _flag);
-        _animator.SetBool("Running", _flag);
+        if (!GameManager.isWater)
+        {
+            WeaponManager.currentWeaponAnimator.SetBool("Run", _flag);
+            _animator.SetBool("Running", _flag);
+        }
     }
     
     public void JumpAnimation(bool _flag)
     {
-        
-        _animator.SetBool("Running", _flag);
+        if (!GameManager.isWater)
+        {
+            _animator.SetBool("Running", _flag);
+        }
     }
     
     public void CrouchingAnimation(bool _flag)
     {
-        _animator.SetBool("Crouching", _flag);
+        if (!GameManager.isWater)
+        {
+            _animator.SetBool("Crouching", _flag);
+        }
     }
     
     public void FinSightanimation(bool _flag)
     {
-        _animator.SetBool("FineSight", _flag);
+
+            _animator.SetBool("FineSight", _flag);
     }
 
     public void FireAnimation()

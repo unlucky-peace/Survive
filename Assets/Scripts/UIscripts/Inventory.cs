@@ -8,8 +8,21 @@ public class Inventory : MonoBehaviour
     [SerializeField] private GameObject inventoryBaseGO; //필요한 컴포넌트
     [SerializeField] private GameObject slotsParentGO;
     private Slot[] _slots;
+
+    public Slot[] GetSlots()
+    {
+        return _slots;
+    }
+
+    [SerializeField] private Item[] items;
     
-    
+    public void LoadToInven(int _arrayNum, string _itemName, int _itemNum)
+    {
+        for (int i = 0; i < items.Length; i++)
+        {
+            if(items[i].itemName == _itemName) _slots[_arrayNum].AddItem(items[i], _itemNum);
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -35,11 +48,13 @@ public class Inventory : MonoBehaviour
 
     private void CloseInventory()
     {
+        GameManager.isOpenInventory = false;
         inventoryBaseGO.SetActive(false);
     }
 
     private void OpenInventory()
     {
+        GameManager.isOpenInventory = true;
         inventoryBaseGO.SetActive(true);
     }
 

@@ -7,7 +7,7 @@ using UnityEngine.AI;
 
 public class Animal : MonoBehaviour
 {
-    [SerializeField] protected String name = "";
+    [SerializeField] protected String animalName = "";
     [SerializeField] protected int hp = 0;
     [SerializeField] protected float walkSpeed = 0f;
     [SerializeField] protected float runSpeed = 0f;

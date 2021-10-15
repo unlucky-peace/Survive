@@ -21,10 +21,10 @@ TagManager:
   - Weapon
   - Item
   - Player
-  - 
-  - 
-  - 
-  - 
+  - NPC
+  - Fire
+  - Terrain
+  - Building
   - 
   - 
   - 

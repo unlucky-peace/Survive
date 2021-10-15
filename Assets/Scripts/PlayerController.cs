@@ -19,6 +19,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float runSpeed = 0f;
     [SerializeField] private float applySpeed = 0f;
     [SerializeField] private float jumpForce = 0f;
+    [SerializeField] private float swimSpeed = 0f;
+    [SerializeField] private float swimfastSpeed = 0f;
+    [SerializeField] private float upSwimSpeed = 0f;
 
     private Vector3 _lastPos; // 움직임 체크 변수
 
@@ -37,7 +40,7 @@ public class PlayerController : MonoBehaviour
     private CapsuleCollider _playerCol;
     private GunController _gunController;
     private Crosshair _crosshair;
-    private StatusController _statusController;
+    public StatusController _statusController;
     
     void Start()
     {
@@ -55,22 +58,29 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        TryRun();
-        Move();
-        MoveCheck();
-        if (!Inventory.inventoryActivated)
+        if (GameManager.canPlayerMove)
         {
+            WaterCheck();
+            if (!GameManager.isWater)
+            {
+                TryRun();
+            }
+            Move();
+            MoveCheck();
             CameraRotation();
             CharacterRotation();
         }
+        
     }
-    
 
     private void Update()
     {
-        IsGrounded();
-        TryJump();
-        TryCrouch();
+        if (GameManager.canPlayerMove)
+        {
+            IsGrounded();
+            TryJump();
+            TryCrouch();
+        }
     }
 
     private void TryCrouch()
@@ -116,10 +126,8 @@ public class PlayerController : MonoBehaviour
     }
     private void TryJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && _isGrounded && _statusController.GetCurSP() > 0)
-        {
-            Jump();
-        }
+        if (Input.GetKeyDown(KeyCode.Space) && _isGrounded && _statusController.GetCurSP() > 0 && !GameManager.isWater) Jump();
+        else if (Input.GetKey(KeyCode.Space) && GameManager.isWater) UpSwim();
     }
 
     private void Jump()
@@ -191,6 +199,21 @@ public class PlayerController : MonoBehaviour
         }
 
     }
+    
+    private void WaterCheck()
+    {
+        if (GameManager.isWater)
+        {
+            if (Input.GetKeyDown(KeyCode.LeftShift)) applySpeed = swimfastSpeed;
+            else applySpeed = swimSpeed;
+        }
+    }
+    
+    private void UpSwim()
+    {
+        _playerRig.velocity = transform.up * upSwimSpeed;
+    }
+
     
     private void CameraRotation()
     {

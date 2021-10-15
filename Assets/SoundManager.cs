@@ -75,7 +75,7 @@ public class SoundManager : MonoBehaviour
     {
         for (int i = 0; i < audioSourceEffects.Length; i++)
         {
-            if(playSoundName[i] == _name) audioSourceEffects[i].Stop();
+            if (playSoundName[i] == _name) audioSourceEffects[i].Stop();
             return;
         }
         Debug.Log("재생 중인" + _name + "사운드가 없습니다");

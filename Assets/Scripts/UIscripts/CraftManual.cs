@@ -14,7 +14,6 @@ public class Craft
 }
 public class CraftManual : MonoBehaviour
 {
-    private bool _isActivated = false;
     private bool _isPreviewActivated = false;
 
     private RaycastHit hit;
@@ -61,7 +60,7 @@ public class CraftManual : MonoBehaviour
 
     private void Build()
     {
-        if (_isPreviewActivated)
+        if (_isPreviewActivated && goPreview.GetComponent<PreviewObject>().isBuildable())
         {
             Instantiate(goPrefab, hit.point, Quaternion.identity);
             Destroy(goPreview);
@@ -79,21 +78,21 @@ public class CraftManual : MonoBehaviour
     private void CraftWindow()
     {
         Debug.Log("CraftWindow()");
-        if (!_isActivated) OpenWindow();
+        if (!GameManager.isOpenCraftManual) OpenWindow();
         else CloseWindow();
     }
 
     private void CloseWindow()
     {
         Debug.Log("CloseWindow()");
-        _isActivated = false;
+        GameManager.isOpenCraftManual = false;
         goBaseUI.SetActive(false);
     }
 
     private void OpenWindow()
     {
         Debug.Log("OpenWindow()");
-        _isActivated = true;
+        GameManager.isOpenCraftManual = true;
         goBaseUI.SetActive(true);
     }
     
@@ -111,7 +110,7 @@ public class CraftManual : MonoBehaviour
 
     private void Reset()
     {
-        _isActivated = false;
+        GameManager.isOpenCraftManual = false;
         _isPreviewActivated = false;
         goPreview = null;
         goPrefab = null;
