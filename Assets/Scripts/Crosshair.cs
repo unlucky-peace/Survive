@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Crosshair : MonoBehaviour
@@ -70,8 +67,4 @@ public class Crosshair : MonoBehaviour
         return  gunAccuracy;
     }
     
-    void Update()
-    {
-        
-    }
 }

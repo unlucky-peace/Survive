@@ -1,14 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.PackageManager.UI;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 [System.Serializable]
 public class Craft
 {
-    public String craftName; // 이름
+    public string craftName; // 이름
     public GameObject goPrefab; // 실제 설치될 프리팹
     public GameObject goPreviewPrefab; //프리뷰 프리팹
 }
